@@ -1,0 +1,27 @@
+name: Checkov Scan
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  checkov_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov
+        run: checkov -d .
