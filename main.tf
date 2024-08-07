@@ -1,5 +1,3 @@
-# main.tf
-
 provider "google" {
   project = "your-gcp-project-id"
   region  = "us-central1"
@@ -15,7 +13,6 @@ resource "google_storage_bucket" "bucket" {
     action {
       type = "Delete"
     }
-
     condition {
       age = 365
     }
@@ -40,6 +37,12 @@ resource "google_storage_bucket" "bucket" {
     environment = "production"
     team        = "devops"
   }
+}
+
+resource "google_storage_bucket_iam_member" "viewers" {
+  bucket = google_storage_bucket.bucket.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
 }
 
 output "bucket_url" {
